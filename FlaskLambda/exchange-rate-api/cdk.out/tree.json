@@ -1,0 +1,1020 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "exchange-rate-api": {
+        "id": "exchange-rate-api",
+        "path": "exchange-rate-api",
+        "children": {
+          "currency_table": {
+            "id": "currency_table",
+            "path": "exchange-rate-api/currency_table",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "exchange-rate-api/currency_table/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.65.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "exchange-rate-api/currency_table/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.65.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.65.0"
+            }
+          },
+          "exchange_lambda_cdk": {
+            "id": "exchange_lambda_cdk",
+            "path": "exchange-rate-api/exchange_lambda_cdk",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "exchange-rate-api/exchange_lambda_cdk/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "exchange-rate-api/exchange_lambda_cdk/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "exchange-rate-api/exchange_lambda_cdk/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "exchange-rate-api/exchange_lambda_cdk/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "exchange-rate-api/exchange_lambda_cdk/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "currencytableC2F6B18E",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "exchangelambdacdkServiceRoleDefaultPolicy00AF8631",
+                            "roles": [
+                              {
+                                "Ref": "exchangelambdacdkServiceRole817A2AA8"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.65.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.65.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "exchange-rate-api/exchange_lambda_cdk/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "exchange-rate-api/exchange_lambda_cdk/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "exchange-rate-api/exchange_lambda_cdk/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.65.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "exchange-rate-api/exchange_lambda_cdk/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "c6f52f00a0c4efe623e5101a93366db35406551753cbe39a40db7c6e8932eded.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "exchangelambdacdkServiceRole817A2AA8",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "currencytableC2F6B18E"
+                        }
+                      }
+                    },
+                    "handler": "exchange_lambda.lambda_handler",
+                    "runtime": "python3.7"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.65.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.65.0"
+            }
+          },
+          "scrap_lambda_cdk": {
+            "id": "scrap_lambda_cdk",
+            "path": "exchange-rate-api/scrap_lambda_cdk",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "exchange-rate-api/scrap_lambda_cdk/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "exchange-rate-api/scrap_lambda_cdk/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "exchange-rate-api/scrap_lambda_cdk/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "exchange-rate-api/scrap_lambda_cdk/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "exchange-rate-api/scrap_lambda_cdk/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "currencytableC2F6B18E",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "scraplambdacdkServiceRoleDefaultPolicyAB7B59B5",
+                            "roles": [
+                              {
+                                "Ref": "scraplambdacdkServiceRoleF6E1AD9F"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.65.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.65.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "exchange-rate-api/scrap_lambda_cdk/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "exchange-rate-api/scrap_lambda_cdk/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "exchange-rate-api/scrap_lambda_cdk/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.65.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "exchange-rate-api/scrap_lambda_cdk/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "97dcfa29f6a1229e9867c6f2ced1abb148b2286a2d8459eae722219164e104e0.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "scraplambdacdkServiceRoleF6E1AD9F",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "TABLE_NAME": {
+                          "Ref": "currencytableC2F6B18E"
+                        }
+                      }
+                    },
+                    "handler": "scrap_lambda.lambda_handler",
+                    "runtime": "python3.7",
+                    "timeout": 300
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.65.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.65.0"
+            }
+          },
+          "customer_api_cdk": {
+            "id": "customer_api_cdk",
+            "path": "exchange-rate-api/customer_api_cdk",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "exchange-rate-api/customer_api_cdk/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "name": "customer_api_cdk"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.65.0"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "exchange-rate-api/customer_api_cdk/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "exchange-rate-api/customer_api_cdk/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "restApiId": {
+                          "Ref": "customerapicdk328D08FB"
+                        },
+                        "description": "Automatically created by the RestApi construct"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.65.0"
+                }
+              },
+              "DeploymentStage.prod": {
+                "id": "DeploymentStage.prod",
+                "path": "exchange-rate-api/customer_api_cdk/DeploymentStage.prod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "exchange-rate-api/customer_api_cdk/DeploymentStage.prod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "restApiId": {
+                          "Ref": "customerapicdk328D08FB"
+                        },
+                        "deploymentId": {
+                          "Ref": "customerapicdkDeploymentF95E105E85ac77ce4134285b09d398bebe0089b2"
+                        },
+                        "stageName": "prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.65.0"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "exchange-rate-api/customer_api_cdk/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.65.0"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "exchange-rate-api/customer_api_cdk/Default",
+                "children": {
+                  "get_exchange_rates": {
+                    "id": "get_exchange_rates",
+                    "path": "exchange-rate-api/customer_api_cdk/Default/get_exchange_rates",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "customerapicdk328D08FB",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "get_exchange_rates",
+                            "restApiId": {
+                              "Ref": "customerapicdk328D08FB"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.65.0"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET",
+                        "children": {
+                          "ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates": {
+                            "id": "ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates",
+                            "path": "exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET/ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "exchangelambdacdkA6688C02",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "customerapicdk328D08FB"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "customerapicdkDeploymentStageprod9D320359"
+                                      },
+                                      "/GET/get_exchange_rates"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.65.0"
+                            }
+                          },
+                          "ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates": {
+                            "id": "ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates",
+                            "path": "exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET/ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "exchangelambdacdkA6688C02",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "customerapicdk328D08FB"
+                                      },
+                                      "/test-invoke-stage/GET/get_exchange_rates"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.65.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "GET",
+                                "resourceId": {
+                                  "Ref": "customerapicdkgetexchangerates888A28BD"
+                                },
+                                "restApiId": {
+                                  "Ref": "customerapicdk328D08FB"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "exchangelambdacdkA6688C02",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.65.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.65.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.65.0"
+                    }
+                  },
+                  "scrap_content": {
+                    "id": "scrap_content",
+                    "path": "exchange-rate-api/customer_api_cdk/Default/scrap_content",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "exchange-rate-api/customer_api_cdk/Default/scrap_content/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "customerapicdk328D08FB",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "scrap_content",
+                            "restApiId": {
+                              "Ref": "customerapicdk328D08FB"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.65.0"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "exchange-rate-api/customer_api_cdk/Default/scrap_content/GET",
+                        "children": {
+                          "ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content": {
+                            "id": "ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content",
+                            "path": "exchange-rate-api/customer_api_cdk/Default/scrap_content/GET/ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "exchangelambdacdkA6688C02",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "customerapicdk328D08FB"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "customerapicdkDeploymentStageprod9D320359"
+                                      },
+                                      "/GET/scrap_content"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.65.0"
+                            }
+                          },
+                          "ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content": {
+                            "id": "ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content",
+                            "path": "exchange-rate-api/customer_api_cdk/Default/scrap_content/GET/ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "exchangelambdacdkA6688C02",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":execute-api:",
+                                      {
+                                        "Ref": "AWS::Region"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":",
+                                      {
+                                        "Ref": "customerapicdk328D08FB"
+                                      },
+                                      "/test-invoke-stage/GET/scrap_content"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.65.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "exchange-rate-api/customer_api_cdk/Default/scrap_content/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "httpMethod": "GET",
+                                "resourceId": {
+                                  "Ref": "customerapicdkscrapcontent1196553C"
+                                },
+                                "restApiId": {
+                                  "Ref": "customerapicdk328D08FB"
+                                },
+                                "authorizationType": "NONE",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "exchangelambdacdkA6688C02",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.65.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.65.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.65.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.65.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.LambdaRestApi",
+              "version": "2.65.0"
+            }
+          },
+          "Rule": {
+            "id": "Rule",
+            "path": "exchange-rate-api/Rule",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "exchange-rate-api/Rule/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                  "aws:cdk:cloudformation:props": {
+                    "scheduleExpression": "cron(0 4 ? * MON-FRI *)",
+                    "state": "ENABLED",
+                    "targets": [
+                      {
+                        "id": "Target0",
+                        "arn": {
+                          "Fn::GetAtt": [
+                            "scraplambdacdk8611CBA6",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                  "version": "2.65.0"
+                }
+              },
+              "AllowEventRuleexchangerateapiscraplambdacdk0B66DFEB": {
+                "id": "AllowEventRuleexchangerateapiscraplambdacdk0B66DFEB",
+                "path": "exchange-rate-api/Rule/AllowEventRuleexchangerateapiscraplambdacdk0B66DFEB",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "scraplambdacdk8611CBA6",
+                        "Arn"
+                      ]
+                    },
+                    "principal": "events.amazonaws.com",
+                    "sourceArn": {
+                      "Fn::GetAtt": [
+                        "Rule4C995B7F",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                  "version": "2.65.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_events.Rule",
+              "version": "2.65.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "exchange-rate-api/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "exchange-rate-api/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.65.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "exchange-rate-api/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.65.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.1.256"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "exchange-rate-api/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.65.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "exchange-rate-api/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.65.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.65.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.256"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.65.0"
+    }
+  }
+}

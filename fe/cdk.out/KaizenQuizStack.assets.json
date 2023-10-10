@@ -1,0 +1,19 @@
+{
+  "version": "30.0.0",
+  "files": {
+    "883647ed13b3b94f21d3bfb3afac209c2d203747997a07feb989d8d28fd8a6b1": {
+      "source": {
+        "path": "KaizenQuizStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "883647ed13b3b94f21d3bfb3afac209c2d203747997a07feb989d8d28fd8a6b1.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

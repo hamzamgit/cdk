@@ -1,0 +1,196 @@
+{
+  "version": "30.0.0",
+  "artifacts": {
+    "exchange-rate-api.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "exchange-rate-api.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "exchange-rate-api": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "exchange-rate-api.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a3cd30e4edf9224c3ca9f3f98026dff7877b94e6d275a11ea0c073213f170ca5.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "exchange-rate-api.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "exchange-rate-api.assets"
+      ],
+      "metadata": {
+        "/exchange-rate-api/currency_table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "currencytableC2F6B18E"
+          }
+        ],
+        "/exchange-rate-api/exchange_lambda_cdk/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "exchangelambdacdkServiceRole817A2AA8"
+          }
+        ],
+        "/exchange-rate-api/exchange_lambda_cdk/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "exchangelambdacdkServiceRoleDefaultPolicy00AF8631"
+          }
+        ],
+        "/exchange-rate-api/exchange_lambda_cdk/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "exchangelambdacdkA6688C02"
+          }
+        ],
+        "/exchange-rate-api/scrap_lambda_cdk/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scraplambdacdkServiceRoleF6E1AD9F"
+          }
+        ],
+        "/exchange-rate-api/scrap_lambda_cdk/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scraplambdacdkServiceRoleDefaultPolicyAB7B59B5"
+          }
+        ],
+        "/exchange-rate-api/scrap_lambda_cdk/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scraplambdacdk8611CBA6"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdk328D08FB"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkDeploymentF95E105E85ac77ce4134285b09d398bebe0089b2"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkDeploymentStageprod9D320359"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkEndpoint7B804512"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkgetexchangerates888A28BD"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET/ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkgetexchangeratesGETApiPermissionexchangerateapicustomerapicdk9A9C37A8GETgetexchangerates34796A71"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET/ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..get_exchange_rates": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkgetexchangeratesGETApiPermissionTestexchangerateapicustomerapicdk9A9C37A8GETgetexchangeratesC03EE65F"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/get_exchange_rates/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkgetexchangeratesGET4A6EEF15"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/scrap_content/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkscrapcontent1196553C"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/scrap_content/GET/ApiPermission.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkscrapcontentGETApiPermissionexchangerateapicustomerapicdk9A9C37A8GETscrapcontent0751C93E"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/scrap_content/GET/ApiPermission.Test.exchangerateapicustomerapicdk9A9C37A8.GET..scrap_content": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkscrapcontentGETApiPermissionTestexchangerateapicustomerapicdk9A9C37A8GETscrapcontentB7844F23"
+          }
+        ],
+        "/exchange-rate-api/customer_api_cdk/Default/scrap_content/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "customerapicdkscrapcontentGET4C5E9416"
+          }
+        ],
+        "/exchange-rate-api/Rule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Rule4C995B7F"
+          }
+        ],
+        "/exchange-rate-api/Rule/AllowEventRuleexchangerateapiscraplambdacdk0B66DFEB": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RuleAllowEventRuleexchangerateapiscraplambdacdk0B66DFEBB1314D3E"
+          }
+        ],
+        "/exchange-rate-api/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/exchange-rate-api/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/exchange-rate-api/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/exchange-rate-api/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "exchange-rate-api"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
